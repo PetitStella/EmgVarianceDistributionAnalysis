@@ -48,16 +48,21 @@ estimate.var.dist <- function(x, maxIter = 1000, tol = 0.0000001)
     
     # Calculate log-marginal likelihood
     J <- log.marginal.likelihood(x, nu, lambda)
-    cat(sprintf("%f\n", J))
+    #cat(sprintf("%f\n", J))
 
     if(abs(preJ - J) < tol){
       alpha <- nu * 0.5
       beta <- lambda * alpha
-      return(list(alpha,beta))
+      
+      result <- list(alpha,beta, J, i)
+      names(result) <- c("alpha", "beta", "log.marginal.likelihood", "iter.num")
+      return(result)
     }
     preJ <- J
   }
   warning("reach maximum iteration")
-  return(list(alpha,beta))
+  result <- list(alpha,beta, J, i)
+  names(result) <- c("alpha", "beta", "log.marginal.likelihood", "iter.num")
+  return(result)
 }
 
